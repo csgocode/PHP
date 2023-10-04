@@ -1,12 +1,3 @@
-<?php
-session_start();
-function sanitizar($datos){
-    $datos = trim($datos); // Elimina espacios antes y después de los datos
-    $datos = stripslashes($datos); // Elimina backslashes 
-    $datos = htmlspecialchars($datos); // Traduce caracteres especiales en entidades HTML
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,13 +23,25 @@ function sanitizar($datos){
 
             <div class="form-body">
 
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
+            <form action="registroProcess.php" method="POST" enctype="multipart/form-data">
 
                     <label for="nombre">Nombre</label><br>
-                    <input type="nombre" name="nombre" id="nombre" placeholder="Ingresa tu nombre"><br>
+                    <input required type="nombre" name="nombre" id="nombre" placeholder="Ingresa tu nombre"><br>
+
+                    <br><label for="correo">Usuario</label><br>
+                    <input required type="user" name="user" id="user" placeholder="Ingresa tu usuario"><br>
+
+                    <br><label for="correo">Contraseña</label><br>
+                    <input required type="password" name="pass1" id="pass1" placeholder="Ingresa tu contraseña"><br>
+                    <br><label for="correo">Confirmar contraseña</label><br>
+                    <input required type="password" name="pass2" id="pass2" placeholder="Confirma tu contraseña"><br>
+
+                    <br><label for="pin">PIN</label><br>
+                    <input required type="password" name="pin" id="pin" placeholder="PIN de Seguridad"><br>
 
                     <br><label for="correo">Correo</label><br>
-                    <input type="email" name="correo" id="correo" placeholder="Ingresa tu Correo"><br>
+                    <input required type="email" name="correo" id="correo" placeholder="Ingresa tu Correo"><br>
+                    
                     <br>
                     <select name="estudios" id="estudios">
                         <option value="Bachillerato">Bachillerato</option>
@@ -46,7 +49,7 @@ function sanitizar($datos){
                     </select><br>
                     <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max_file_size; ?>"><br>
                     <label for="correo">Subida de AVATAR</label><br>
-                    <input type="file" name="imagen" /><br><br>
+                    <input required type="file" name="imagen" /><br><br>
                     <input type="submit" value="Registro">
                 </form>
 
