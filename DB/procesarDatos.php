@@ -8,7 +8,7 @@ if ($user && $pass) {
     $result = $pdo->query("SELECT * FROM usuarios WHERE usuario='$user' AND contrasena='$pass'");
 
     if ($result->rowCount() > 0) {
-        echo "Acceso permitido, credenciales válidas. ";
+        echo "Acceso permitido, credenciales válidas. Redireccionando al panel de Administración.";
         header("refresh: 3, URL=panelAdmin.php");
     } else {
         echo "Acceso denegado.";

@@ -1,13 +1,12 @@
 <?php
 require('database.php');
+$id = $_GET['id'];
 
 if (isset($_GET['id']) != null){
-    //anti SQLi
-    $stmt = $pdo->prepare('DELETE FROM stock WHERE id_producto = :id');
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
-    $registros = $stmt->rowCount();
+
+    $registros = $pdo->exec('DELETE FROM usuarios WHERE id = ' . $id);
     echo "<p>Se han borrado $registros registros.</p>";
+
 } else {
     echo 'Error';
 }
