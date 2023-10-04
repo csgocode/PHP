@@ -22,20 +22,32 @@ if($_SERVER['REQUEST_METHOD'] = 'POST'){
     $arrayArchivo = pathinfo($nombreArchivo);
     $extension = $arrayArchivo['extension'];
 
+    $checkUser = $pdo->prepare("SELECT id FROM usuarios WHERE usuario = :user");
+    $checkUser->bindParam(":user", $usuario);
+    $checkUser->execute();
+
+    if ($checkUser->fetch()) {
+        $errores[] = "El usuario ya existe. Por favor elige otro nombre de usuario. Te vamos a redirigir en 5 segundos.";
+        header('Refresh: 5, URL=registro.php');
+    }
+
     if ($pass1 != $pass2) {
-        $errores[] = "La confirmación de la contraseña es incorrecta.";
+        $errores[] = "La confirmación de la contraseña es incorrecta. Te vamos a redirigir en 5 segundos.";
+        header('Refresh: 5, URL=registro.php');
     }
 
     // Comprobamos la extensión del archivo
 
     if(!in_array($extension, $extensionesValidas)){
-        $errores[] = "La extensión del archivo no es válida o no se ha subido ningún archivo";
+        $errores[] = "La extensión del archivo no es válida o no se ha subido ningún archivo. Te vamos a redirigir en 5 segundos.";
+        header('Refresh: 5, URL=registro.php');
     }
 
     // Comprobamos el tamaño del archivo
 
     if($filesize > $max_file_size){
-        $errores[] = "La imagen debe de tener un tamaño inferior a 5000 kb";
+        $errores[] = "La imagen debe de tener un tamaño inferior a 5000 kb. Te vamos a redirigir en 5 segundos.";
+        header('Refresh: 5, URL=registro.php');
     }
 
     // Comprobamos y renombramos el nombre del archivo
@@ -57,15 +69,21 @@ if($_SERVER['REQUEST_METHOD'] = 'POST'){
         $pdoResponse->bindParam(":estudios", $estudios);
         $pdoResponse->bindParam(":avatar", $nombreCompleto);
         $pdoResponse->execute();
+        $idUser = $pdo->query("SELECT id FROM usuarios WHERE usuario = '$usuario';");
+        $row = $idUser->fetch();
+        $idUser = $row['id'];
+
         move_uploaded_file($directorioTemp, $nombreCompleto);
-        print "Te has registrado correctamente. Te vamos a llevar a tu panel de administracion.";
+        print "Te has registrado correctamente. Te vamos a llevar a tu panel de administracion. Espera unos segundos.";
+        header('Refresh: 5, URL=usuario.php?id=' . $idUser);
+        exit();
     } else {
         print_r($errores);
     }
 
 } else {
     echo "No has completado todos los campos. Te vamos a redirigir de nuevo.";
-    header("refresh: 3, URL=registro.php");
+    header("refresh: 4, URL=registro.php");
 
 }
 
