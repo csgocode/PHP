@@ -1,11 +1,22 @@
 <?php
 session_start();
+require 'database.php';
+if (!isset($_SESSION['id'])) {
+    header('Location: login.php');
+} else {
+    $pdoResponse = $pdo->prepare('SELECT usuario FROM usuarios WHERE id = ?');
+    $pdoResponse->bindParam(1, $_SESSION['id']);
+    $pdoResponse->execute();
+    $usuario = $pdoResponse->fetch();
+}
+
 ?>
 <html>
     <head>
         <title>Panel Administración</title>
     </head>
     <body>
+        <h2>Sesion logueada como: <?php echo array_values($usuario)[0]; ?></h2>
         <h1>Opciones de administración</h1>
         <h5>Borrar usuario</h5>
         <form action="borrar.php" method="GET">
@@ -37,6 +48,11 @@ session_start();
         <input type="user" name="id" id="id" placeholder="Ingresa el usuario">  <br>
         <input type="submit" value="Visualizar usuario"><br>
         </form>
+        <br>
+        <form action="logout.php">
+         <input type="submit" value="Cerrar sesión" />
+        </form>
+
 
     </body>
 </html>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'database.php';
 
 $user = $_GET['user'] ?? null;
@@ -9,7 +10,12 @@ if ($user && $pass) {
 
     if ($result->rowCount() > 0) {
         echo "Acceso permitido, credenciales válidas. Redireccionando al panel de Administración.";
-        header("refresh: 3, URL=panelAdmin.php");
+        $idUser = $pdo->query("SELECT id FROM usuarios WHERE usuario = '$user';");
+        $row = $idUser->fetch();
+        $idUser = $row['id'];
+        $_SESSION['id'] = $idUser;
+        header("refresh: 3, URL=panelAdmin.php?id=$idUser");
+
     } else {
         echo "Acceso denegado.";
     }

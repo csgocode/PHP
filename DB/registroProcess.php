@@ -72,6 +72,7 @@ if($_SERVER['REQUEST_METHOD'] = 'POST'){
         $idUser = $pdo->query("SELECT id FROM usuarios WHERE usuario = '$usuario';");
         $row = $idUser->fetch();
         $idUser = $row['id'];
+        $_SESSION['id'] = $idUser;
 
         move_uploaded_file($directorioTemp, $nombreCompleto);
         print "Te has registrado correctamente. Te vamos a llevar a tu panel de administracion. Espera unos segundos.";
